@@ -14,14 +14,19 @@ jobs:
           cd emsdk
           ./emsdk install latest
           ./emsdk activate latest
-          echo "source $(pwd)/emsdk_env.sh" >> $GITHUB_ENV
+          echo "export EMSDK=$(pwd)" >> $HOME/.bashrc
+          echo "source $(pwd)/emsdk_env.sh" >> $HOME/.bashrc
 
-      - name: Set Up Emscripten Environment
+      - name: Load Emscripten Environment
         run: |
+          source $HOME/.bashrc
           source emsdk/emsdk_env.sh
+          emcc -v  # Check if Emscripten is working
 
       - name: Compile to WebAssembly
         run: |
+          source $HOME/.bashrc
+          source emsdk/emsdk_env.sh
           emcc mario.c -o mario.html -s USE_SDL=2 -s USE_SDL_IMAGE=2 --shell-file shell.html
 
       - name: Upload Build Artifacts
