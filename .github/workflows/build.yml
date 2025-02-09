@@ -1,0 +1,30 @@
+name: Build WebAssembly
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Emscripten
+        run: |
+          git clone https://github.com/emscripten-core/emsdk.git
+          cd emsdk
+          ./emsdk install latest
+          ./emsdk activate latest
+          source ./emsdk_env.sh
+
+      - name: Compile to WebAssembly
+        run: |
+          emcc mario.c -o mario.html -s USE_SDL=2 -s USE_SDL_IMAGE=2 --shell-file shell.html
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: webassembly-output
+          path: |
+            mario.html
+            mario.js
+            mario.wasm
