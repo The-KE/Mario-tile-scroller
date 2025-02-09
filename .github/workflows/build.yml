@@ -14,10 +14,11 @@ jobs:
           cd emsdk
           ./emsdk install latest
           ./emsdk activate latest
-          source ./emsdk_env.sh
+          echo "source $(pwd)/emsdk_env.sh" >> $GITHUB_ENV
 
       - name: Compile to WebAssembly
         run: |
+          source emsdk/emsdk_env.sh
           emcc mario.c -o mario.html -s USE_SDL=2 -s USE_SDL_IMAGE=2 --shell-file shell.html
 
       - name: Upload Build Artifacts
