@@ -28,7 +28,7 @@ jobs:
       - name: Compile to WebAssembly
         run: |
           source emsdk/emsdk_env.sh
-          emcc mario.c -o mario.html -s USE_SDL=2 -s USE_SDL_IMAGE=2 --shell-file shell.html
+          emcc mario.c -o mario.html -s USE_SDL=2 -s USE_SDL_IMAGE=2
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
